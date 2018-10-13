@@ -10,6 +10,8 @@ public class Grid : MonoBehaviour {
     [SerializeField]
     private FollowCam Camera;
     [SerializeField]
+    private GameObject[] obj_map;
+    [SerializeField]
     private GameObject obj_player;
 
     public bool displayGridGizmos;
@@ -23,7 +25,15 @@ public class Grid : MonoBehaviour {
 
     //[Header("[블록]")]
     public static List<GameObject> BlockList = new List<GameObject>();
-    
+    public enum BlockType
+    {
+        NONE = 0,
+        NOMAL,
+        MONSTER,
+        BOSS,
+        WALL,
+    }
+
     public static Unit player;
 
     void Awake()
@@ -45,20 +55,13 @@ public class Grid : MonoBehaviour {
         while(true)
         {
             blockIndex = Random.Range(0, BlockList.Count);
-            if(GameManager.instance.mapInfo.MapBlockInfo[blockIndex].height != 0)
+            if(GameManager.instance.mapInfo.MapBlockInfo[blockIndex].height > 0)
             {
                 break;
             }
         }
-        player.transform.position = new Vector3(BlockList[blockIndex].transform.position.x, BlockList[blockIndex].transform.position.y + (BlockList[blockIndex].transform.localScale.y/2) + 0.25f, BlockList[blockIndex].transform.position.z);
-        player.transform.localScale = new Vector3(1, 0.25f, 1);
+        player.transform.position = new Vector3(BlockList[blockIndex].transform.position.x, GameManager.instance.mapInfo.MapBlockInfo[blockIndex].height, BlockList[blockIndex].transform.position.z);
         Camera.target = player.transform;
-    }
-
-    public static void MovePlayer(Transform target)
-    {
-        player.target = target;
-        player.PlayerMove();
     }
 
     public void SetMap()
@@ -67,7 +70,25 @@ public class Grid : MonoBehaviour {
         {
             float y = GameManager.instance.mapInfo.MapBlockInfo[i].height;
             BlockList[i].transform.position = new Vector3(BlockList[i].transform.position.x, y / 2, BlockList[i].transform.position.z);
-            BlockList[i].transform.localScale = new Vector3(1, y, 1);
+            BlockList[i].transform.localScale = new Vector3(BlockList[i].transform.localScale.x, y, BlockList[i].transform.localScale.z);
+            switch (GameManager.instance.mapInfo.MapBlockInfo[i].type)
+            {
+                case (int)BlockType.NONE:
+                    BlockList[i].transform.localScale = new Vector3(BlockList[i].transform.localScale.x, 0.1f, BlockList[i].transform.localScale.z);
+                    break;
+
+                case (int)BlockType.NOMAL:
+                    break;
+
+                case (int)BlockType.MONSTER:
+                    break;
+
+                case (int)BlockType.BOSS:
+                    break;
+
+                case (int)BlockType.WALL:
+                    break;
+            }
         }
     }
 
@@ -92,12 +113,25 @@ public class Grid : MonoBehaviour {
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
                 grid[x, y] = new Node(walkable, worldPoint, x, y);
+                
+                GameObject cube = Instantiate<GameObject>(obj_map[GameManager.instance.mapInfo.MapBlockInfo[index].type], transform);
+                switch (GameManager.instance.mapInfo.MapBlockInfo[index].type)
+                {
+                    case (int)BlockType.NOMAL:
+                        break;
 
-                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);   // inst로 바꾸기
+                    case (int)BlockType.MONSTER:
+                        break;
+
+                    case (int)BlockType.BOSS:
+                        break;
+
+                    case (int)BlockType.WALL:
+                        break;
+                }
                 cube.transform.parent = Map;
                 cube.transform.position = worldPoint;
                 cube.AddComponent<Block>();
-                //Block.instance.Index = index;
                 Block.instance.Setup(GameManager.instance.mapInfo.MapBlockInfo[index]);
                 BlockList.Add(cube);
                 index++;
@@ -125,7 +159,7 @@ public class Grid : MonoBehaviour {
 
                 if (blockindex >= BlockList.Count)
                     continue;
-                if (1f < Mathf.Abs(BlockList[blockindex].transform.localScale.y - BlockList[curblockindex].transform.localScale.y) || BlockList[blockindex].transform.localScale.y <= 0)
+                if (1f < Mathf.Abs(BlockList[blockindex].transform.localScale.y - BlockList[curblockindex].transform.localScale.y) || BlockList[blockindex].transform.localScale.y <= 0.5f)
                 {
                     continue;
                 }

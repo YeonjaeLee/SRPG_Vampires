@@ -14,7 +14,7 @@ public class Block : MonoBehaviour {
     #region base
     private void Awake() {
         instance = this;
-        transform.GetComponent<Renderer>().material.color = Color.gray;
+        //transform.GetComponent<Renderer>().material.color = Color.gray;
     }
     #endregion
 
@@ -34,7 +34,7 @@ public class Block : MonoBehaviour {
 
         if(!DragCameraMove.Drag && !EventSystem.current.IsPointerOverGameObject())
         {
-            Grid.MovePlayer(transform);
+            Grid.player.PlayerMove(this);
         }
     }
     #endregion

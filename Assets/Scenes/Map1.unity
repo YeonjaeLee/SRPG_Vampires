@@ -144,6 +144,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Map: {fileID: 1038993675}
   Camera: {fileID: 925471103}
+  obj_map:
+  - {fileID: 1600344320188624, guid: 06d615e2d40a59a409d9e28083066d28, type: 2}
+  - {fileID: 1580066277913702, guid: ede08c575bbf52741945fa68f413b73c, type: 2}
+  - {fileID: 1526357061377152, guid: eca5d8e2480b92a4cae6506ff35cb4eb, type: 2}
+  - {fileID: 1360300526489278, guid: 1a7bcb0310e699043bbb84e432cd2e00, type: 2}
+  - {fileID: 1889471093902656, guid: befa0870db58f8e45bc2faf1690d1fc2, type: 2}
   obj_player: {fileID: 1000010468463812, guid: e1727f18d9e200a42ae52bce09048f93, type: 2}
   displayGridGizmos: 1
   unwalkableMask:

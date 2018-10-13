@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Unit : MonoBehaviour {
-
-    public Transform target;
+    
     private Animator playerAnim;
     private Transform playerBG;
-    float speed = 0.1f;
+    float speed = 0.06f;
     Vector3[] path;
     int targetIndex;
 
@@ -18,10 +17,10 @@ public class Unit : MonoBehaviour {
         playerBG = transform.Find("BG");
     }
 
-    public void PlayerMove()
+    public void PlayerMove(Block target)
     {
         PlayAnim("Move");
-        PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+        PathRequestManager.RequestPath(transform.position, target.transform.position, OnPathFound);
     }
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
