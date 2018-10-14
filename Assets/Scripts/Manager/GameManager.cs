@@ -12,10 +12,10 @@ public class GameManager : MonoBehaviour {
     private GameObject obj_player;
     [SerializeField]
     private GameObject[] obj_monster;
+    [SerializeField]
+    private GameObject[] obj_boss;
     [HideInInspector]
     public Player player;
-    [HideInInspector]
-    public Monster monster;
 
     private void Awake()
     {
@@ -64,9 +64,18 @@ public class GameManager : MonoBehaviour {
     {
         foreach(Info_Map.BlockInfo m in GameManager.instance.mapInfo.MapBlockInfo)
         {
-            if (m.type == (int)Block.BlockType.MONSTER || m.type == (int)Block.BlockType.BOSS)
+            if (m.type == (int)Block.BlockType.MONSTER)
             {
-                GameObject prefab = Instantiate<GameObject>(obj_monster[m.type - 2], Grid.instance.tr_Monster);
+                int random = Random.Range(0, obj_monster.Length);
+                GameObject prefab = Instantiate<GameObject>(obj_monster[random], Grid.instance.tr_Monster);
+                Monster monster = prefab.AddComponent<Monster>();
+                monster.transform.name = string.Format("Monster({0})", (Block.BlockType)m.type);
+                monster.transform.position = new Vector3(Grid.instance.BlockList[m.index - 1].transform.position.x, m.height, Grid.instance.BlockList[m.index - 1].transform.position.z);
+            }
+            else if (m.type == (int)Block.BlockType.BOSS)
+            {
+                int random = Random.Range(0, obj_boss.Length);
+                GameObject prefab = Instantiate<GameObject>(obj_boss[random], Grid.instance.tr_Monster);
                 Monster monster = prefab.AddComponent<Monster>();
                 monster.transform.name = string.Format("Monster({0})", (Block.BlockType)m.type);
                 monster.transform.position = new Vector3(Grid.instance.BlockList[m.index - 1].transform.position.x, m.height, Grid.instance.BlockList[m.index - 1].transform.position.z);

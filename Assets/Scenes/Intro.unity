@@ -211,10 +211,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obj_player: {fileID: 1000010468463812, guid: e1727f18d9e200a42ae52bce09048f93, type: 2}
   obj_monster:
-  - {fileID: 1000010468463812, guid: e1727f18d9e200a42ae52bce09048f93, type: 2}
+  - {fileID: 1000010187677870, guid: d14ab20cad8d6bb4cbd8ce022db81f81, type: 2}
+  - {fileID: 1000013580051650, guid: 8d59521e71b7a0446a62b71c8b96d504, type: 2}
+  - {fileID: 1000011831081172, guid: 17978346dd7b45542b1bc21a26ccdeb9, type: 2}
+  - {fileID: 1000011567123360, guid: 9d340b9296da5a14592c92a20ecb4e35, type: 2}
+  - {fileID: 1000013950029044, guid: e5a8d5bb15dd1ec45aaf9cbceb9f19c3, type: 2}
+  - {fileID: 1000012822690368, guid: 6e5fa2074473d1143a5da287e7811ade, type: 2}
+  - {fileID: 1000012016352094, guid: 90c5f444d141cc94da656c3ffb495646, type: 2}
+  - {fileID: 1000012919533442, guid: 885799090746e5f43b2c994e2ddc7f4d, type: 2}
+  - {fileID: 1000010239654126, guid: 7e9e95facf032bd4a8ecf098c84a4efa, type: 2}
+  - {fileID: 1000010375277084, guid: 27ada588bd0f5804fa98a8a9fdfa8c43, type: 2}
+  obj_boss:
   - {fileID: 1000010214324088, guid: 45ff9c7e76d601e42acbd4ee4c5aa285, type: 2}
+  - {fileID: 1000013931707134, guid: 8f46609a7e6441847825dd7c238301f7, type: 2}
   player: {fileID: 0}
-  monster: {fileID: 0}
 --- !u!4 &618800023
 Transform:
   m_ObjectHideFlags: 0
