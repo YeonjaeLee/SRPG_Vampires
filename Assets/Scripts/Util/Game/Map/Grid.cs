@@ -22,28 +22,51 @@ public class Grid : MonoBehaviour {
 
     float nodeDiameter;
     public int gridSizeX, gridSizeY;
+    public int MaxSize
+    {
+        get
+        {
+            return gridSizeX * gridSizeY;
+        }
+    }
 
     //[Header("[블록]")]
-    public static List<GameObject> BlockList = new List<GameObject>();
-    public enum BlockType
-    {
-        NONE = 0,
-        NOMAL,
-        MONSTER,
-        BOSS,
-        WALL,
-    }
+    public static List<Block> BlockList = new List<Block>();
 
     public static Unit player;
 
     void Awake()
     {
-        BlockList = new List<GameObject>();
+        BlockList = new List<Block>();
         nodeDiameter = nodeRadius * 2;
         gridSizeX = gridSizeY = Mathf.RoundToInt(Mathf.Sqrt(GameManager.instance.mapInfo.MapBlockInfo.Count) / nodeDiameter);
         CreateGrid();
-        SetMap();
         CreatePlayer();
+    }
+
+    void CreateGrid()
+    {
+        grid = new Node[gridSizeX, gridSizeY];
+        worldBottomLeft = transform.position - Vector3.right * gridSizeX / 2 - Vector3.forward * gridSizeY / 2;
+
+        int index = 0;
+        for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int y = 0; y < gridSizeY; y++)
+            {
+                Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
+                bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
+                grid[x, y] = new Node(walkable, worldPoint, x, y);
+
+                GameObject cube = Instantiate<GameObject>(obj_map[GameManager.instance.mapInfo.MapBlockInfo[index].type], transform);
+                Block cubeBlock = cube.AddComponent<Block>();
+                cube.transform.parent = Map;
+                cube.transform.position = worldPoint;
+                cubeBlock.Setup(GameManager.instance.mapInfo.MapBlockInfo[index]);
+                BlockList.Add(cubeBlock);
+                index++;
+            }
+        }
     }
 
     private void CreatePlayer()
@@ -62,81 +85,6 @@ public class Grid : MonoBehaviour {
         }
         player.transform.position = new Vector3(BlockList[blockIndex].transform.position.x, GameManager.instance.mapInfo.MapBlockInfo[blockIndex].height, BlockList[blockIndex].transform.position.z);
         Camera.target = player.transform;
-    }
-
-    public void SetMap()
-    {
-        for (int i = 0; i < BlockList.Count; i++)
-        {
-            float y = GameManager.instance.mapInfo.MapBlockInfo[i].height;
-            BlockList[i].transform.position = new Vector3(BlockList[i].transform.position.x, y / 2, BlockList[i].transform.position.z);
-            BlockList[i].transform.localScale = new Vector3(BlockList[i].transform.localScale.x, y, BlockList[i].transform.localScale.z);
-            switch (GameManager.instance.mapInfo.MapBlockInfo[i].type)
-            {
-                case (int)BlockType.NONE:
-                    BlockList[i].transform.localScale = new Vector3(BlockList[i].transform.localScale.x, 0.1f, BlockList[i].transform.localScale.z);
-                    break;
-
-                case (int)BlockType.NOMAL:
-                    break;
-
-                case (int)BlockType.MONSTER:
-                    break;
-
-                case (int)BlockType.BOSS:
-                    break;
-
-                case (int)BlockType.WALL:
-                    break;
-            }
-        }
-    }
-
-    public int MaxSize
-    {
-        get
-        {
-            return gridSizeX * gridSizeY;
-        }
-    }
-
-    void CreateGrid()
-    {
-        grid = new Node[gridSizeX, gridSizeY];
-        worldBottomLeft = transform.position - Vector3.right * gridSizeX / 2 - Vector3.forward * gridSizeY / 2;
-
-        int index = 0;
-        for (int x = 0; x < gridSizeX; x++)
-        {
-            for (int y = 0; y < gridSizeY; y++)
-            {
-                Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
-                bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
-                grid[x, y] = new Node(walkable, worldPoint, x, y);
-                
-                GameObject cube = Instantiate<GameObject>(obj_map[GameManager.instance.mapInfo.MapBlockInfo[index].type], transform);
-                switch (GameManager.instance.mapInfo.MapBlockInfo[index].type)
-                {
-                    case (int)BlockType.NOMAL:
-                        break;
-
-                    case (int)BlockType.MONSTER:
-                        break;
-
-                    case (int)BlockType.BOSS:
-                        break;
-
-                    case (int)BlockType.WALL:
-                        break;
-                }
-                cube.transform.parent = Map;
-                cube.transform.position = worldPoint;
-                cube.AddComponent<Block>();
-                Block.instance.Setup(GameManager.instance.mapInfo.MapBlockInfo[index]);
-                BlockList.Add(cube);
-                index++;
-            }
-        }
     }
 
     public List<Node> GetNeighbours(Node node)
@@ -159,7 +107,7 @@ public class Grid : MonoBehaviour {
 
                 if (blockindex >= BlockList.Count)
                     continue;
-                if (1f < Mathf.Abs(BlockList[blockindex].transform.localScale.y - BlockList[curblockindex].transform.localScale.y) || BlockList[blockindex].transform.localScale.y <= 0.5f)
+                if (1f < Mathf.Abs(BlockList[blockindex].blockInfo.height - BlockList[curblockindex].blockInfo.height) || BlockList[blockindex].blockInfo.height <= 0)
                 {
                     continue;
                 }
