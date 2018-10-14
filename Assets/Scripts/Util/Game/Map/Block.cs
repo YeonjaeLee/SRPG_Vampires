@@ -92,7 +92,7 @@ public class Block : MonoBehaviour {
 
         if(!DragCameraMove.Drag && !EventSystem.current.IsPointerOverGameObject())
         {
-            Grid.player.PlayerMove(this);
+            GameManager.instance.player.PlayerMove(this);
         }
     }
     #endregion

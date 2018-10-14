@@ -209,6 +209,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68ad8e62c6ec9a84eb2bbdec8cfcc2a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obj_player: {fileID: 1000010468463812, guid: e1727f18d9e200a42ae52bce09048f93, type: 2}
+  obj_monster:
+  - {fileID: 1000010468463812, guid: e1727f18d9e200a42ae52bce09048f93, type: 2}
+  - {fileID: 1000010214324088, guid: 45ff9c7e76d601e42acbd4ee4c5aa285, type: 2}
+  player: {fileID: 0}
+  monster: {fileID: 0}
 --- !u!4 &618800023
 Transform:
   m_ObjectHideFlags: 0

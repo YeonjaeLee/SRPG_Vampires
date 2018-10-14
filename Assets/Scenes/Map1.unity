@@ -113,6 +113,34 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &177672916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 177672917}
+  m_Layer: 0
+  m_Name: Monster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &177672917
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 177672916}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 179036681}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &179036679
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,15 +170,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32352d3241da6d94396d9377e6692d40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Map: {fileID: 1038993675}
-  Camera: {fileID: 925471103}
   obj_map:
   - {fileID: 1600344320188624, guid: 06d615e2d40a59a409d9e28083066d28, type: 2}
   - {fileID: 1580066277913702, guid: ede08c575bbf52741945fa68f413b73c, type: 2}
   - {fileID: 1526357061377152, guid: eca5d8e2480b92a4cae6506ff35cb4eb, type: 2}
   - {fileID: 1360300526489278, guid: 1a7bcb0310e699043bbb84e432cd2e00, type: 2}
   - {fileID: 1889471093902656, guid: befa0870db58f8e45bc2faf1690d1fc2, type: 2}
-  obj_player: {fileID: 1000010468463812, guid: e1727f18d9e200a42ae52bce09048f93, type: 2}
+  tr_Map: {fileID: 1038993675}
+  Camera: {fileID: 925471103}
+  tr_Monster: {fileID: 177672917}
+  tr_Player: {fileID: 1246865616}
   displayGridGizmos: 1
   unwalkableMask:
     serializedVersion: 2
@@ -158,6 +187,7 @@ MonoBehaviour:
   nodeRadius: 0.5
   gridSizeX: 0
   gridSizeY: 0
+  BlockList: []
 --- !u!4 &179036681
 Transform:
   m_ObjectHideFlags: 0
@@ -169,6 +199,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1038993675}
+  - {fileID: 177672917}
+  - {fileID: 1246865616}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -643,3 +675,31 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1246865615
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1246865616}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1246865616
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1246865615}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 179036681}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

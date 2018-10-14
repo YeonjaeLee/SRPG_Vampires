@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour {
 
-    [SerializeField]
-    private Transform Map;
-    [SerializeField]
-    private FollowCam Camera;
+    public static Grid instance;
     [SerializeField]
     private GameObject[] obj_map;
     [SerializeField]
-    private GameObject obj_player;
+    private Transform tr_Map;
+    public FollowCam Camera;
+    public Transform tr_Monster;
+    public Transform tr_Player;
 
     public bool displayGridGizmos;
     public LayerMask unwalkableMask;
@@ -29,22 +29,21 @@ public class Grid : MonoBehaviour {
             return gridSizeX * gridSizeY;
         }
     }
+    
+    public List<Block> BlockList = new List<Block>();
 
-    //[Header("[블록]")]
-    public static List<Block> BlockList = new List<Block>();
-
-    public static Unit player;
-
-    void Awake()
+    private void Awake()
     {
+        instance = this;
         BlockList = new List<Block>();
         nodeDiameter = nodeRadius * 2;
         gridSizeX = gridSizeY = Mathf.RoundToInt(Mathf.Sqrt(GameManager.instance.mapInfo.MapBlockInfo.Count) / nodeDiameter);
         CreateGrid();
-        CreatePlayer();
+        GameManager.instance.CreatePlayer();
+        GameManager.instance.CreateMonster();
     }
 
-    void CreateGrid()
+    private void CreateGrid()
     {
         grid = new Node[gridSizeX, gridSizeY];
         worldBottomLeft = transform.position - Vector3.right * gridSizeX / 2 - Vector3.forward * gridSizeY / 2;
@@ -60,7 +59,7 @@ public class Grid : MonoBehaviour {
 
                 GameObject cube = Instantiate<GameObject>(obj_map[GameManager.instance.mapInfo.MapBlockInfo[index].type], transform);
                 Block cubeBlock = cube.AddComponent<Block>();
-                cube.transform.parent = Map;
+                cube.transform.parent = tr_Map;
                 cube.transform.position = worldPoint;
                 cubeBlock.Setup(GameManager.instance.mapInfo.MapBlockInfo[index]);
                 BlockList.Add(cubeBlock);
@@ -68,25 +67,7 @@ public class Grid : MonoBehaviour {
             }
         }
     }
-
-    private void CreatePlayer()
-    {
-        int blockIndex = 0;
-        GameObject prefab = Instantiate<GameObject>(obj_player, transform);
-        player = prefab.AddComponent<Unit>();
-        player.transform.name = "Player";
-        while(true)
-        {
-            blockIndex = Random.Range(0, BlockList.Count);
-            if(GameManager.instance.mapInfo.MapBlockInfo[blockIndex].height > 0)
-            {
-                break;
-            }
-        }
-        player.transform.position = new Vector3(BlockList[blockIndex].transform.position.x, GameManager.instance.mapInfo.MapBlockInfo[blockIndex].height, BlockList[blockIndex].transform.position.z);
-        Camera.target = player.transform;
-    }
-
+    
     public List<Node> GetNeighbours(Node node)
     {
         List<Node> neighbours = new List<Node>();

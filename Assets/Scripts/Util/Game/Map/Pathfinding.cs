@@ -107,7 +107,7 @@ public class Pathfinding : MonoBehaviour {
 
         for(int i = 0; i < path.Count; i++)
         {
-            int blockindex = path[i].gridX * (int)Mathf.Sqrt(Grid.BlockList.Count) + path[i].gridY * 1;
+            int blockindex = path[i].gridX * (int)Mathf.Sqrt(Grid.instance.BlockList.Count) + path[i].gridY * 1;
             waypoints.Add(new Vector3(path[i].worldPosition.x, GameManager.instance.mapInfo.MapBlockInfo[blockindex].height, path[i].worldPosition.z));
         }
         return waypoints.ToArray();

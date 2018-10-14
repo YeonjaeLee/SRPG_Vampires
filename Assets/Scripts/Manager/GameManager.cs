@@ -7,6 +7,15 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager instance;
     public Info_Map mapInfo = new Info_Map();
+    //inGame
+    [SerializeField]
+    private GameObject obj_player;
+    [SerializeField]
+    private GameObject[] obj_monster;
+    [HideInInspector]
+    public Player player;
+    [HideInInspector]
+    public Monster monster;
 
     private void Awake()
     {
@@ -30,6 +39,38 @@ public class GameManager : MonoBehaviour {
         if(UserInfoManager.instance.isLobby)
         {
             LoadingGameManager.LoadGameScene("Map1");
+        }
+    }
+
+    //inGame
+    public void CreatePlayer()
+    {
+        int blockIndex = 0;
+        GameObject prefab = Instantiate<GameObject>(obj_player, Grid.instance.tr_Player);
+        player = prefab.AddComponent<Player>();
+        player.transform.name = "Player";
+        while (true)
+        {
+            blockIndex = Random.Range(0, Grid.instance.BlockList.Count);
+            if (GameManager.instance.mapInfo.MapBlockInfo[blockIndex].height > 0)
+            {
+                break;
+            }
+        }
+        player.transform.position = new Vector3(Grid.instance.BlockList[blockIndex].transform.position.x, GameManager.instance.mapInfo.MapBlockInfo[blockIndex].height, Grid.instance.BlockList[blockIndex].transform.position.z);
+        Grid.instance.Camera.target = player.transform;
+    }
+    public void CreateMonster()
+    {
+        foreach(Info_Map.BlockInfo m in GameManager.instance.mapInfo.MapBlockInfo)
+        {
+            if (m.type == (int)Block.BlockType.MONSTER || m.type == (int)Block.BlockType.BOSS)
+            {
+                GameObject prefab = Instantiate<GameObject>(obj_monster[m.type - 2], Grid.instance.tr_Monster);
+                Monster monster = prefab.AddComponent<Monster>();
+                monster.transform.name = string.Format("Monster({0})", (Block.BlockType)m.type);
+                monster.transform.position = new Vector3(Grid.instance.BlockList[m.index - 1].transform.position.x, m.height, Grid.instance.BlockList[m.index - 1].transform.position.z);
+            }
         }
     }
     #endregion
