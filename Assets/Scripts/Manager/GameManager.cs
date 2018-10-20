@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour {
         while (true)
         {
             blockIndex = Random.Range(0, Grid.instance.BlockList.Count);
-            if (GameManager.instance.mapInfo.MapBlockInfo[blockIndex].height > 0)
+            if (GameManager.instance.mapInfo.MapBlockInfo[blockIndex].type == (int)Block.BlockType.NOMAL)
             {
                 break;
             }
