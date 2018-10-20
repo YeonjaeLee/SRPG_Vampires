@@ -176,8 +176,8 @@ MonoBehaviour:
   - {fileID: 1526357061377152, guid: eca5d8e2480b92a4cae6506ff35cb4eb, type: 2}
   - {fileID: 1360300526489278, guid: 1a7bcb0310e699043bbb84e432cd2e00, type: 2}
   - {fileID: 1889471093902656, guid: befa0870db58f8e45bc2faf1690d1fc2, type: 2}
+  - {fileID: 1076836971327022, guid: 45f92107f46196c49a4bd4b1236ff240, type: 2}
   tr_Map: {fileID: 1038993675}
-  Camera: {fileID: 925471103}
   tr_Monster: {fileID: 177672917}
   tr_Player: {fileID: 1246865616}
   displayGridGizmos: 1

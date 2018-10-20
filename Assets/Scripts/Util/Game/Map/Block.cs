@@ -7,9 +7,7 @@ using UnityEngine.EventSystems;
 public class Block : MonoBehaviour {
 
     public int Index;
-    public static Block instance;   // 삭제 필요
     public Info_Map.BlockInfo blockInfo;
-    private Material material;
     public enum BlockType
     {
         NONE = 0,
@@ -17,15 +15,9 @@ public class Block : MonoBehaviour {
         MONSTER,
         BOSS,
         WALL,
+        EXIT,
     }
-
-    #region base
-    private void Awake() {
-        instance = this;
-        //transform.GetComponent<Renderer>().material.color = Color.gray;
-    }
-    #endregion
-
+    
     #region public
     public void Setup(Info_Map.BlockInfo _blockInfo)
     {
@@ -59,6 +51,9 @@ public class Block : MonoBehaviour {
 
             case BlockType.WALL:
                 break;
+
+            case BlockType.EXIT:
+                break;
         }
     }
 
@@ -70,6 +65,13 @@ public class Block : MonoBehaviour {
                 break;
 
             case BlockType.NOMAL:
+                int randomIndex = Random.Range(0, 2);
+                if(randomIndex > 0)
+                {
+                    GameObject nomal_prefab = Resources.Load<GameObject>(Const.MAP_BLOCKTYPE_PATH_NOMAL);
+                    GameObject nomal = Instantiate<GameObject>(nomal_prefab, transform.parent);
+                    nomal.transform.position = new Vector3(nomal.transform.position.x + transform.position.x, blockInfo.height, nomal.transform.position.z + transform.position.z);
+                }
                 break;
 
             case BlockType.MONSTER:
@@ -79,6 +81,12 @@ public class Block : MonoBehaviour {
                 break;
 
             case BlockType.WALL:
+                GameObject wall_prefab = Resources.Load<GameObject>(Const.MAP_BLOCKTYPE_PATH_WALL);
+                GameObject wall = Instantiate<GameObject>(wall_prefab, transform.parent);
+                wall.transform.position = new Vector3(wall.transform.position.x + transform.position.x, blockInfo.height, wall.transform.position.z + transform.position.z);
+                break;
+
+            case BlockType.EXIT:
                 break;
         }
     }

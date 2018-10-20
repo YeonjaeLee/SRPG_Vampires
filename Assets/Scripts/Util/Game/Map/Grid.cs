@@ -58,8 +58,8 @@ public class Grid : MonoBehaviour {
 
                 GameObject cube = Instantiate<GameObject>(obj_map[GameManager.instance.mapInfo.MapBlockInfo[index].type], transform);
                 Block cubeBlock = cube.AddComponent<Block>();
-                cube.transform.parent = tr_Map;
-                cube.transform.position = worldPoint;
+                cubeBlock.transform.parent = tr_Map;
+                cubeBlock.transform.position = worldPoint;
                 cubeBlock.Setup(GameManager.instance.mapInfo.MapBlockInfo[index]);
                 BlockList.Add(cubeBlock);
                 index++;
@@ -87,7 +87,8 @@ public class Grid : MonoBehaviour {
 
                 if (blockindex >= BlockList.Count)
                     continue;
-                if (1f < Mathf.Abs(BlockList[blockindex].blockInfo.height - BlockList[curblockindex].blockInfo.height) || BlockList[blockindex].blockInfo.height <= 0)
+                if (1f < Mathf.Abs(BlockList[blockindex].blockInfo.height - BlockList[curblockindex].blockInfo.height)
+                    || BlockList[blockindex].blockInfo.type == (int)Block.BlockType.WALL || BlockList[blockindex].blockInfo.type == (int)Block.BlockType.NONE)
                 {
                     continue;
                 }
