@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
+    private const string TAG_CAMERA_KEY = "Camera";
     public static GameManager instance;
     public Info_Map mapInfo = new Info_Map();
     //inGame
@@ -43,6 +44,18 @@ public class GameManager : MonoBehaviour {
     }
 
     //inGame
+    public FollowCam GetCamera()
+    {
+        GameObject go = GameObject.FindGameObjectWithTag(TAG_CAMERA_KEY);
+        if (null == go)
+        {
+            Debug.LogError("Camera Tag Find Failed!!");
+            return null;
+        }
+
+        return go.GetComponent<FollowCam>(); ;
+    }
+
     public void CreatePlayer()
     {
         int blockIndex = 0;
@@ -58,7 +71,7 @@ public class GameManager : MonoBehaviour {
             }
         }
         player.transform.position = new Vector3(Grid.instance.BlockList[blockIndex].transform.position.x, GameManager.instance.mapInfo.MapBlockInfo[blockIndex].height, Grid.instance.BlockList[blockIndex].transform.position.z);
-        Grid.instance.Camera.target = player.transform;
+        GetCamera().target = player.transform;
     }
     public void CreateMonster()
     {

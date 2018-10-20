@@ -10,7 +10,6 @@ public class Grid : MonoBehaviour {
     private GameObject[] obj_map;
     [SerializeField]
     private Transform tr_Map;
-    public FollowCam Camera;
     public Transform tr_Monster;
     public Transform tr_Player;
 
